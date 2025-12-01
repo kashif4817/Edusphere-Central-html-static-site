@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Authentication - Edusphere Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-blue': '#1e3a8a',
+                        'teal': '#14b8a6',
+                        'yellow': '#fbbf24',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold text-royal-blue mb-4">🔐 Authentication System Test Page</h1>
+            <p class="text-gray-600 mb-4">This page helps you test and debug the authentication system.</p>
+            <div class="flex gap-4">
+                <a href="login.html" class="bg-royal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition">Go to Login</a>
+                <a href="dashboard.html" class="bg-teal text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition">Go to Dashboard</a>
+                <button onclick="clearAllData()" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">Clear All Data</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Current User -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-royal-blue mb-4">👤 Current User</h2>
+                <div id="current-user" class="text-sm"></div>
+                <button onclick="loadUserData()" class="mt-4 bg-teal text-white px-4 py-2 rounded hover:bg-teal-700 transition text-sm">Refresh</button>
+            </div>
+
+            <!-- All Registered Users -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-royal-blue mb-4">👥 All Registered Users</h2>
+                <div id="all-users" class="text-sm"></div>
+                <button onclick="loadUserData()" class="mt-4 bg-teal text-white px-4 py-2 rounded hover:bg-teal-700 transition text-sm">Refresh</button>
+            </div>
+
+            <!-- SessionStorage -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-royal-blue mb-4">💾 Session Storage</h2>
+                <div id="session-storage" class="text-sm"></div>
+                <button onclick="clearSession()" class="mt-4 bg-yellow text-royal-blue px-4 py-2 rounded hover:bg-yellow-400 transition text-sm">Clear Session</button>
+            </div>
+
+            <!-- LocalStorage -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-royal-blue mb-4">🗄️ Local Storage</h2>
+                <div id="local-storage" class="text-sm"></div>
+                <button onclick="clearLocal()" class="mt-4 bg-yellow text-royal-blue px-4 py-2 rounded hover:bg-yellow-400 transition text-sm">Clear Local Storage</button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-xl font-bold text-royal-blue mb-4">⚡ Quick Actions</h2>
+            <div class="space-y-4">
+                <div>
+                    <button onclick="createTestUser()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition text-sm">
+                        Create Test User
+                    </button>
+                    <span class="text-gray-600 text-sm ml-2">Email: test@example.com | Password: test123</span>
+                </div>
+                <div>
+                    <button onclick="loginTestUser()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition text-sm">
+                        Auto Login as Test User
+                    </button>
+                </div>
+                <div>
+                    <button onclick="viewCookies()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition text-sm">
+                        View Cookies
+                    </button>
+                    <span id="cookie-display" class="text-gray-600 text-sm ml-2"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Link -->
+        <div class="bg-royal-blue text-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-xl font-bold mb-2">📖 Documentation</h2>
+            <p class="mb-4">For detailed information about the authentication system, check out:</p>
+            <a href="AUTH_GUIDE.md" class="bg-white text-royal-blue px-4 py-2 rounded hover:bg-gray-100 transition inline-block">View AUTH_GUIDE.md</a>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        function loadUserData() {
+            // Current User
+            const currentUserDiv = document.getElementById('current-user');
+            const currentUser = window.EdusphereAuth?.getCurrentUser();
+
+            if (currentUser) {
+                currentUserDiv.innerHTML = `
+                    <div class="bg-green-50 p-4 rounded border border-green-200">
+                        <p class="text-green-800 font-bold mb-2">✅ Logged In</p>
+                        <p><strong>ID:</strong> ${currentUser.id}</p>
+                        <p><strong>Name:</strong> ${currentUser.name}</p>
+                        <p><strong>Email:</strong> ${currentUser.email}</p>
+                        <p><strong>Grade:</strong> ${currentUser.grade}</p>
+                        <p><strong>Login Time:</strong> ${new Date(currentUser.loginTime).toLocaleString()}</p>
+                    </div>
+                `;
+            } else {
+                currentUserDiv.innerHTML = `
+                    <div class="bg-red-50 p-4 rounded border border-red-200">
+                        <p class="text-red-800 font-bold">❌ Not Logged In</p>
+                    </div>
+                `;
+            }
+
+            // All Users
+            const allUsersDiv = document.getElementById('all-users');
+            const users = window.EdusphereAuth?.getUsers() || [];
+
+            if (users.length > 0) {
+                allUsersDiv.innerHTML = `
+                    <div class="space-y-2">
+                        <p class="font-bold text-teal mb-2">Total Users: ${users.length}</p>
+                        ${users.map((user, index) => `
+                            <div class="bg-gray-50 p-2 rounded border border-gray-200 text-xs">
+                                <p><strong>${index + 1}.</strong> ${user.name} (${user.email})</p>
+                                <p class="text-gray-600">Grade: ${user.grade} | Joined: ${new Date(user.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                allUsersDiv.innerHTML = `<p class="text-gray-500 italic">No users registered yet</p>`;
+            }
+
+            // Session Storage
+            const sessionDiv = document.getElementById('session-storage');
+            const sessionUser = sessionStorage.getItem('edusphere_current_user');
+            if (sessionUser) {
+                sessionDiv.innerHTML = `<pre class="bg-gray-50 p-2 rounded text-xs overflow-auto">${JSON.stringify(JSON.parse(sessionUser), null, 2)}</pre>`;
+            } else {
+                sessionDiv.innerHTML = `<p class="text-gray-500 italic">Empty</p>`;
+            }
+
+            // Local Storage
+            const localDiv = document.getElementById('local-storage');
+            const localUser = localStorage.getItem('edusphere_current_user');
+            const localUsers = localStorage.getItem('edusphere_users');
+            if (localUser || localUsers) {
+                localDiv.innerHTML = `
+                    ${localUser ? `<p class="text-xs mb-2"><strong>Current User:</strong></p><pre class="bg-gray-50 p-2 rounded text-xs overflow-auto mb-2">${JSON.stringify(JSON.parse(localUser), null, 2)}</pre>` : ''}
+                    ${localUsers ? `<p class="text-xs mb-2"><strong>All Users:</strong> ${JSON.parse(localUsers).length} users stored</p>` : ''}
+                `;
+            } else {
+                localDiv.innerHTML = `<p class="text-gray-500 italic">Empty</p>`;
+            }
+        }
+
+        function clearSession() {
+            if (confirm('Clear session storage?')) {
+                sessionStorage.clear();
+                alert('Session storage cleared!');
+                loadUserData();
+            }
+        }
+
+        function clearLocal() {
+            if (confirm('Clear local storage? This will delete all users!')) {
+                localStorage.clear();
+                alert('Local storage cleared!');
+                loadUserData();
+                location.reload();
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ WARNING: This will delete ALL data including all users, sessions, and cookies. Continue?')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                document.cookie.split(";").forEach(c => {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                alert('All data cleared!');
+                location.reload();
+            }
+        }
+
+        function createTestUser() {
+            const users = JSON.parse(localStorage.getItem('edusphere_users')) || [];
+
+            // Check if test user already exists
+            if (users.find(u => u.email === 'test@example.com')) {
+                alert('Test user already exists!');
+                return;
+            }
+
+            const testUser = {
+                id: Date.now().toString(),
+                name: 'Test User',
+                email: 'test@example.com',
+                password: 'test123',
+                grade: '10',
+                createdAt: new Date().toISOString(),
+                stats: {
+                    totalNotes: 50,
+                    downloads: 25,
+                    quizzesTaken: 8,
+                    studyStreak: 5
+                }
+            };
+
+            users.push(testUser);
+            localStorage.setItem('edusphere_users', JSON.stringify(users));
+            alert('Test user created!\n\nEmail: test@example.com\nPassword: test123');
+            loadUserData();
+            location.reload();
+        }
+
+        function loginTestUser() {
+            const users = JSON.parse(localStorage.getItem('edusphere_users')) || [];
+            const testUser = users.find(u => u.email === 'test@example.com');
+
+            if (!testUser) {
+                alert('Test user not found. Create test user first!');
+                return;
+            }
+
+            const userData = {
+                id: testUser.id,
+                name: testUser.name,
+                email: testUser.email,
+                grade: testUser.grade,
+                loginTime: new Date().toISOString()
+            };
+
+            sessionStorage.setItem('edusphere_current_user', JSON.stringify(userData));
+            localStorage.setItem('edusphere_current_user', JSON.stringify(userData));
+
+            alert('Logged in as Test User!');
+            loadUserData();
+        }
+
+        function viewCookies() {
+            const cookies = document.cookie;
+            const cookieDisplay = document.getElementById('cookie-display');
+            if (cookies) {
+                cookieDisplay.textContent = cookies;
+            } else {
+                cookieDisplay.textContent = 'No cookies set';
+            }
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadUserData);
+    </script>
+</body>
+</html>

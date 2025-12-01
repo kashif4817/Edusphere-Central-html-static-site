@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes & Subjects - Edusphere Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-blue': '#1e3a8a',
+                        'teal': '#14b8a6',
+                        'yellow': '#fbbf24',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="image.png" alt="Edusphere Central Logo" class="h-12 w-12">
+                    <div class="ml-2">
+                        <span class="text-2xl font-bold text-royal-blue">Edusphere Central</span>
+                        <div id="nav-user-welcome" class="hidden text-sm text-gray-600"></div>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-teal transition">Home</a>
+                    <a href="notes.html" class="text-royal-blue font-semibold hover:text-teal transition">Notes & Subjects</a>
+                    <a href="resources.html" class="text-gray-700 hover:text-teal transition">Study Resources</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-teal transition">Pricing</a>
+                    <a href="about.html" class="text-gray-700 hover:text-teal transition">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-teal transition">Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4" id="nav-auth-section">
+                    <!-- Auth buttons will be dynamically updated -->
+                    <a href="index.html" id="nav-login" class="text-gray-700 hover:text-teal transition">Login</a>
+                    <a href="index.html#signup" id="nav-signup" class="bg-royal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition">Sign Up</a>
+                    <button id="nav-logout" class="hidden bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition shadow-md">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </button>
+                    <button class="text-gray-700 hover:text-teal transition">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-teal">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="home.html" class="block py-2 text-gray-700 hover:text-teal">Home</a>
+                <a href="notes.html" class="block py-2 text-royal-blue font-semibold">Notes & Subjects</a>
+                <a href="resources.html" class="block py-2 text-gray-700 hover:text-teal">Study Resources</a>
+                <a href="pricing.html" class="block py-2 text-gray-700 hover:text-teal">Pricing</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-teal">About</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-teal">Contact</a>
+                <div id="mobile-user-name" class="hidden py-2 text-royal-blue font-semibold"></div>
+                <a href="index.html" id="mobile-login" class="block py-2 text-gray-700 hover:text-teal">Login</a>
+                <a href="index.html#signup" id="mobile-signup" class="block py-2 text-royal-blue font-semibold">Sign Up</a>
+                <button id="mobile-logout" class="hidden block py-2 text-red-500 font-semibold">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="bg-gradient-to-r from-royal-blue to-blue-900 text-white py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-bold mb-4">Browse Notes by Subject</h1>
+            <p class="text-xl text-gray-200">Find organized, concise, and exam-focused notes for all major subjects.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="bg-white py-8 border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <label class="font-semibold text-gray-700">Filter by Grade:</label>
+                    <select id="grade-filter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-blue">
+                        <option value="all">All Grades</option>
+                        <option value="9">Grade 9</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                    </select>
+                </div>
+                <div class="relative w-full md:w-96">
+                    <input type="text" placeholder="Search subjects..." class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-blue">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subjects Grid -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="subjects-grid">
+                <!-- Physics -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-700 p-8 text-white">
+                        <div class="text-6xl mb-4">⚛️</div>
+                        <h3 class="text-3xl font-bold">Physics</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">15+ Chapters</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Detailed Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Solved Numericals</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Short & Long Questions</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=physics" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chemistry -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-green-500 to-green-700 p-8 text-white">
+                        <div class="text-6xl mb-4">🧪</div>
+                        <h3 class="text-3xl font-bold">Chemistry</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">12+ Chapters</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Detailed Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Chemical Equations</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Reactions & Formulas</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=chemistry" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-700 p-8 text-white">
+                        <div class="text-6xl mb-4">📐</div>
+                        <h3 class="text-3xl font-bold">Mathematics</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">20+ Chapters</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Detailed Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Step-by-Step Solutions</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Practice Problems</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=math" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biology -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-teal to-teal-700 p-8 text-white">
+                        <div class="text-6xl mb-4">🧬</div>
+                        <h3 class="text-3xl font-bold">Biology</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">18+ Chapters</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Detailed Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Diagrams & Charts</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Classification Tables</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=biology" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Computer Science -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 p-8 text-white">
+                        <div class="text-6xl mb-4">💻</div>
+                        <h3 class="text-3xl font-bold">Computer Science</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">10+ Chapters</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Detailed Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Code Examples</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Programming Concepts</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=cs" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- English -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="bg-gradient-to-br from-red-500 to-red-700 p-8 text-white">
+                        <div class="text-6xl mb-4">📖</div>
+                        <h3 class="text-3xl font-bold">English</h3>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Grade 9-12</span>
+                                <span class="bg-teal text-white px-3 py-1 rounded-full text-sm">Multiple Topics</span>
+                            </div>
+                        </div>
+                        <ul class="text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Grammar & Composition</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Literature Notes</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Past Papers</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-teal mr-2"></i> Essay Samples</li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="subject.html?subject=english" class="flex-1 bg-royal-blue text-white px-6 py-3 rounded-lg text-center hover:bg-blue-900 transition">View Online</a>
+                            <button class="bg-yellow text-royal-blue px-6 py-3 rounded-lg hover:bg-yellow-400 transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gradient-to-r from-royal-blue to-blue-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-6">Can't find what you're looking for?</h2>
+            <p class="text-xl mb-8 text-gray-200">Request notes for specific topics and we'll add them!</p>
+            <a href="contact.html" class="bg-yellow text-royal-blue px-10 py-4 rounded-lg font-bold text-xl hover:bg-yellow-400 transition inline-block">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="image.png" alt="Edusphere Central Logo" class="h-10 w-10 md:hidden">
+                        <span class="ml-2 text-xl font-bold">Edusphere Central</span>
+                    </div>
+                    <p class="text-gray-400">Simplify Your Studies, Amplify Your Success.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-teal transition">Home</a></li>
+                        <li><a href="notes.html" class="text-gray-400 hover:text-teal transition">Notes & Subjects</a></li>
+                        <li><a href="resources.html" class="text-gray-400 hover:text-teal transition">Study Resources</a></li>
+                        <li><a href="pricing.html" class="text-gray-400 hover:text-teal transition">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-teal transition">About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-teal transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <p class="text-gray-400 mb-2">support@eduspherecentral.com</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-facebook text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-instagram text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-tiktok text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-youtube text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Edusphere Central. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // Update navigation based on login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = window.EdusphereAuth?.getCurrentUser();
+
+            const navLogin = document.getElementById('nav-login');
+            const navSignup = document.getElementById('nav-signup');
+            const navLogout = document.getElementById('nav-logout');
+
+            const mobileLogin = document.getElementById('mobile-login');
+            const mobileSignup = document.getElementById('mobile-signup');
+            const mobileLogout = document.getElementById('mobile-logout');
+            const mobileUserName = document.getElementById('mobile-user-name');
+
+            const navWelcome = document.getElementById('nav-user-welcome');
+
+            if (currentUser) {
+                // User is logged in - show logout button and welcome message
+                navLogin.classList.add('hidden');
+                navSignup.classList.add('hidden');
+                navLogout.classList.remove('hidden');
+                navWelcome.classList.remove('hidden');
+                navWelcome.textContent = `Welcome, ${currentUser.name}!`;
+
+                mobileLogin.classList.add('hidden');
+                mobileSignup.classList.add('hidden');
+                mobileLogout.classList.remove('hidden');
+                mobileUserName.classList.remove('hidden');
+                mobileUserName.textContent = `Welcome, ${currentUser.name}!`;
+
+                // Logout button click handler
+                navLogout.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        window.EdusphereAuth.logout();
+                        alert('Logged out successfully!');
+                        window.location.href = 'index.html';
+                    }
+                });
+
+                mobileLogout.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        window.EdusphereAuth.logout();
+                        alert('Logged out successfully!');
+                        window.location.href = 'index.html';
+                    }
+                });
+            } else {
+                // User is not logged in - show login/signup buttons
+                navLogin.classList.remove('hidden');
+                navSignup.classList.remove('hidden');
+                navLogout.classList.add('hidden');
+                navWelcome.classList.add('hidden');
+
+                mobileLogin.classList.remove('hidden');
+                mobileSignup.classList.remove('hidden');
+                mobileLogout.classList.add('hidden');
+                mobileUserName.classList.add('hidden');
+            }
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics - Edusphere Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-blue': '#1e3a8a',
+                        'teal': '#14b8a6',
+                        'yellow': '#fbbf24',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="image.png" alt="Edusphere Central Logo" class="h-12 w-12">
+                    <span class="ml-3 text-2xl font-bold text-royal-blue">Edusphere Central</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-teal transition">Home</a>
+                    <a href="notes.html" class="text-royal-blue font-semibold hover:text-teal transition">Notes & Subjects</a>
+                    <a href="resources.html" class="text-gray-700 hover:text-teal transition">Study Resources</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-teal transition">Pricing</a>
+                    <a href="about.html" class="text-gray-700 hover:text-teal transition">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-teal transition">Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-teal transition">Login</a>
+                    <a href="login.html#signup" class="bg-royal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition">Sign Up</a>
+                    <button class="text-gray-700 hover:text-teal transition">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-teal">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-teal">Home</a>
+                <a href="notes.html" class="block py-2 text-royal-blue font-semibold">Notes & Subjects</a>
+                <a href="resources.html" class="block py-2 text-gray-700 hover:text-teal">Study Resources</a>
+                <a href="pricing.html" class="block py-2 text-gray-700 hover:text-teal">Pricing</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-teal">About</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-teal">Contact</a>
+                <a href="login.html" class="block py-2 text-gray-700 hover:text-teal">Login</a>
+                <a href="login.html#signup" class="block py-2 text-royal-blue font-semibold">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="bg-white py-4 border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="index.html" class="hover:text-teal transition">Home</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <a href="notes.html" class="hover:text-teal transition">Notes & Subjects</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <span class="text-royal-blue font-semibold" id="subject-name">Physics</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subject Header -->
+    <section class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <span class="text-6xl mr-4" id="subject-icon">⚛️</span>
+                        <div>
+                            <h1 class="text-5xl font-bold" id="subject-title">Physics</h1>
+                            <p class="text-xl text-gray-100 mt-2">High-quality, exam-ready physics notes and solved numerical problems.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <button class="bg-yellow text-royal-blue px-8 py-4 rounded-lg font-bold hover:bg-yellow-400 transition">
+                        <i class="fas fa-download mr-2"></i> Download All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grade Selector -->
+    <section class="bg-white py-6 border-b sticky top-20 z-40">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center gap-4 overflow-x-auto">
+                <span class="font-semibold text-gray-700 whitespace-nowrap">Select Grade:</span>
+                <button class="grade-tab active px-6 py-2 rounded-lg bg-royal-blue text-white font-semibold hover:bg-blue-900 transition" data-grade="9">Grade 9</button>
+                <button class="grade-tab px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition" data-grade="10">Grade 10</button>
+                <button class="grade-tab px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition" data-grade="11">Grade 11</button>
+                <button class="grade-tab px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition" data-grade="12">Grade 12</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapters Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-royal-blue mb-8">Chapter List</h2>
+
+            <!-- Chapter Accordion -->
+            <div class="space-y-4">
+                <!-- Chapter 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="chapter-header w-full flex items-center justify-between p-6 hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <div class="bg-royal-blue text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl mr-4">1</div>
+                            <div class="text-left">
+                                <h3 class="text-xl font-bold text-royal-blue">Physical Quantities & Measurement</h3>
+                                <p class="text-gray-600 text-sm mt-1">Introduction to physics, SI units, measuring instruments</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-royal-blue text-xl transition-transform"></i>
+                    </button>
+                    <div class="chapter-content hidden">
+                        <div class="p-6 bg-gray-50 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-file-alt text-teal text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Chapter Summary</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-calculator text-yellow text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Solved Numericals</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-question-circle text-blue-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Short Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-book-open text-purple-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Long Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-check-square text-green-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">MCQs</p>
+                                </button>
+                                <button class="bg-yellow text-royal-blue p-4 rounded-lg shadow hover:shadow-lg transition font-bold">
+                                    <i class="fas fa-download text-3xl mb-2"></i>
+                                    <p>PDF Download</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="chapter-header w-full flex items-center justify-between p-6 hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <div class="bg-royal-blue text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl mr-4">2</div>
+                            <div class="text-left">
+                                <h3 class="text-xl font-bold text-royal-blue">Kinematics</h3>
+                                <p class="text-gray-600 text-sm mt-1">Motion, velocity, acceleration, equations of motion</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-royal-blue text-xl transition-transform"></i>
+                    </button>
+                    <div class="chapter-content hidden">
+                        <div class="p-6 bg-gray-50 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-file-alt text-teal text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Chapter Summary</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-calculator text-yellow text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Solved Numericals</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-question-circle text-blue-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Short Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-book-open text-purple-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Long Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-check-square text-green-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">MCQs</p>
+                                </button>
+                                <button class="bg-yellow text-royal-blue p-4 rounded-lg shadow hover:shadow-lg transition font-bold">
+                                    <i class="fas fa-download text-3xl mb-2"></i>
+                                    <p>PDF Download</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="chapter-header w-full flex items-center justify-between p-6 hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <div class="bg-royal-blue text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl mr-4">3</div>
+                            <div class="text-left">
+                                <h3 class="text-xl font-bold text-royal-blue">Dynamics</h3>
+                                <p class="text-gray-600 text-sm mt-1">Force, Newton's laws, friction, momentum</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-royal-blue text-xl transition-transform"></i>
+                    </button>
+                    <div class="chapter-content hidden">
+                        <div class="p-6 bg-gray-50 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-file-alt text-teal text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Chapter Summary</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-calculator text-yellow text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Solved Numericals</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-question-circle text-blue-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Short Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-book-open text-purple-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Long Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-check-square text-green-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">MCQs</p>
+                                </button>
+                                <button class="bg-yellow text-royal-blue p-4 rounded-lg shadow hover:shadow-lg transition font-bold">
+                                    <i class="fas fa-download text-3xl mb-2"></i>
+                                    <p>PDF Download</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="chapter-header w-full flex items-center justify-between p-6 hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <div class="bg-royal-blue text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl mr-4">4</div>
+                            <div class="text-left">
+                                <h3 class="text-xl font-bold text-royal-blue">Work, Energy & Power</h3>
+                                <p class="text-gray-600 text-sm mt-1">Work, kinetic energy, potential energy, conservation of energy</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-royal-blue text-xl transition-transform"></i>
+                    </button>
+                    <div class="chapter-content hidden">
+                        <div class="p-6 bg-gray-50 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-file-alt text-teal text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Chapter Summary</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-calculator text-yellow text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Solved Numericals</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-question-circle text-blue-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Short Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-book-open text-purple-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Long Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-check-square text-green-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">MCQs</p>
+                                </button>
+                                <button class="bg-yellow text-royal-blue p-4 rounded-lg shadow hover:shadow-lg transition font-bold">
+                                    <i class="fas fa-download text-3xl mb-2"></i>
+                                    <p>PDF Download</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button class="chapter-header w-full flex items-center justify-between p-6 hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <div class="bg-royal-blue text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl mr-4">5</div>
+                            <div class="text-left">
+                                <h3 class="text-xl font-bold text-royal-blue">Circular Motion & Gravitation</h3>
+                                <p class="text-gray-600 text-sm mt-1">Angular velocity, centripetal force, universal gravitation</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-royal-blue text-xl transition-transform"></i>
+                    </button>
+                    <div class="chapter-content hidden">
+                        <div class="p-6 bg-gray-50 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-file-alt text-teal text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Chapter Summary</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-calculator text-yellow text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Solved Numericals</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-question-circle text-blue-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Short Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-book-open text-purple-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">Long Questions</p>
+                                </button>
+                                <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                                    <i class="fas fa-check-square text-green-500 text-3xl mb-2"></i>
+                                    <p class="font-semibold text-gray-700">MCQs</p>
+                                </button>
+                                <button class="bg-yellow text-royal-blue p-4 rounded-lg shadow hover:shadow-lg transition font-bold">
+                                    <i class="fas fa-download text-3xl mb-2"></i>
+                                    <p>PDF Download</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="image.png" alt="Edusphere Central Logo" class="h-10 w-10">
+                        <span class="ml-2 text-xl font-bold">Edusphere Central</span>
+                    </div>
+                    <p class="text-gray-400">Simplify Your Studies, Amplify Your Success.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-teal transition">Home</a></li>
+                        <li><a href="notes.html" class="text-gray-400 hover:text-teal transition">Notes & Subjects</a></li>
+                        <li><a href="resources.html" class="text-gray-400 hover:text-teal transition">Study Resources</a></li>
+                        <li><a href="pricing.html" class="text-gray-400 hover:text-teal transition">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-teal transition">About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-teal transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <p class="text-gray-400 mb-2">support@eduspherecentral.com</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-facebook text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-instagram text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-tiktok text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-youtube text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Edusphere Central. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

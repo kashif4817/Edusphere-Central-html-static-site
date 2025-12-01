@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edusphere Central - Simplify Your Studies, Amplify Your Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-blue': '#1e3a8a',
+                        'teal': '#14b8a6',
+                        'yellow': '#fbbf24',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar styling for study resources section */
+        .overflow-x-auto::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .overflow-x-auto::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #1e3a8a, #14b8a6);
+            border-radius: 10px;
+        }
+
+        .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #1e40af, #0d9488);
+        }
+
+        /* Firefox scrollbar styling */
+        .overflow-x-auto {
+            scrollbar-width: thin;
+            scrollbar-color: #1e3a8a #f1f5f9;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="image.png" alt="Edusphere Central Logo" class="h-12 w-12">
+                    <div class="ml-2">
+                        <span class="text-2xl font-bold text-royal-blue">Edusphere Central</span>
+                        <div id="nav-user-welcome" class="hidden text-sm text-gray-600"></div>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="home.html" class="text-royal-blue font-semibold hover:text-teal transition">Home</a>
+                    <a href="notes.html" class="text-gray-700 hover:text-teal transition">Notes & Subjects</a>
+                    <a href="resources.html" class="text-gray-700 hover:text-teal transition">Study Resources</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-teal transition">Pricing</a>
+                    <a href="about.html" class="text-gray-700 hover:text-teal transition">About</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-teal transition">Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4" id="nav-auth-section">
+                    <!-- Auth buttons will be dynamically updated -->
+                    <a href="index.html" id="nav-login" class="text-gray-700 hover:text-teal transition">Login</a>
+                    <a href="index.html#signup" id="nav-signup" class="bg-royal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition">Sign Up</a>
+                    <button id="nav-logout" class="hidden bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition shadow-md">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </button>
+                    <button class="text-gray-700 hover:text-teal transition">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-teal">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="home.html" class="block py-2 text-royal-blue font-semibold">Home</a>
+                <a href="notes.html" class="block py-2 text-gray-700 hover:text-teal">Notes & Subjects</a>
+                <a href="resources.html" class="block py-2 text-gray-700 hover:text-teal">Study Resources</a>
+                <a href="pricing.html" class="block py-2 text-gray-700 hover:text-teal">Pricing</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-teal">About</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-teal">Contact</a>
+                <div id="mobile-user-name" class="hidden py-2 text-royal-blue font-semibold"></div>
+                <a href="index.html" id="mobile-login" class="block py-2 text-gray-700 hover:text-teal">Login</a>
+                <a href="index.html#signup" id="mobile-signup" class="block py-2 text-royal-blue font-semibold">Sign Up</a>
+                <button id="mobile-logout" class="hidden block py-2 text-red-500 font-semibold">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-royal-blue to-blue-900 text-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6">Simplify Your Studies, Amplify Your Success.</h1>
+                    <p class="text-xl mb-8 text-gray-200">A centralized platform offering notes, study guides, past papers, and learning tools to help students excel with clarity and confidence.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="notes.html" class="bg-yellow text-royal-blue px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-400 transition text-center">Get Started</a>
+                        <a href="notes.html" class="bg-white text-royal-blue px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition text-center">Browse Notes</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="image.png" alt="Education Illustration" class="w-96 h-96 object-contain">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Edusphere Central? -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center text-royal-blue mb-16">Why Edusphere Central?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition">
+                    <div class="text-5xl mb-4">📘</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Verified Notes</h3>
+                    <p class="text-gray-600">High-quality, accurate, well-organized academic material.</p>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Smart Guidance</h3>
+                    <p class="text-gray-600">Study tools and structured summaries that simplify learning.</p>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition">
+                    <div class="text-5xl mb-4">⚡</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Quick Access</h3>
+                    <p class="text-gray-600">All subjects in one place—easy navigation and downloads.</p>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition">
+                    <div class="text-5xl mb-4">💡</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Student-Centric</h3>
+                    <p class="text-gray-600">Designed to boost performance and exam success.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Subjects Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center text-royal-blue mb-16">Featured Subjects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Physics -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">⚛️</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Physics</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ 15+ Chapters</li>
+                        <li>✓ Detailed Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Solved Numericals</li>
+                    </ul>
+                    <a href="subject.html?subject=physics" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore Physics</a>
+                </div>
+
+                <!-- Chemistry -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🧪</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Chemistry</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ 12+ Chapters</li>
+                        <li>✓ Detailed Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Chemical Equations</li>
+                    </ul>
+                    <a href="subject.html?subject=chemistry" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore Chemistry</a>
+                </div>
+
+                <!-- Math -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">📐</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Mathematics</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ 20+ Chapters</li>
+                        <li>✓ Detailed Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Step-by-Step Solutions</li>
+                    </ul>
+                    <a href="subject.html?subject=math" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore Math</a>
+                </div>
+
+                <!-- Biology -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🧬</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Biology</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ 18+ Chapters</li>
+                        <li>✓ Detailed Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Diagrams & Charts</li>
+                    </ul>
+                    <a href="subject.html?subject=biology" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore Biology</a>
+                </div>
+
+                <!-- Computer Science -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">💻</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">Computer Science</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ 10+ Chapters</li>
+                        <li>✓ Detailed Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Code Examples</li>
+                    </ul>
+                    <a href="subject.html?subject=cs" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore CS</a>
+                </div>
+
+                <!-- English -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">📖</div>
+                    <h3 class="text-2xl font-bold text-royal-blue mb-3">English</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>✓ Grammar & Composition</li>
+                        <li>✓ Literature Notes</li>
+                        <li>✓ Past Papers</li>
+                        <li>✓ Essay Samples</li>
+                    </ul>
+                    <a href="subject.html?subject=english" class="bg-royal-blue text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-900 transition">Explore English</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Resources Preview -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center text-royal-blue mb-16">Preview of Study Resources</h2>
+            <div class="overflow-x-auto">
+                <div class="flex space-x-6 pb-6">
+                    <div class="min-w-[300px] bg-gradient-to-br from-teal to-teal-600 text-white rounded-xl p-8">
+                        <h3 class="text-2xl font-bold mb-4">📝 Chapter Summaries</h3>
+                        <p>Concise, point-by-point summaries of every chapter for quick revision.</p>
+                    </div>
+                    <div class="min-w-[300px] bg-gradient-to-br from-yellow to-yellow-600 text-white rounded-xl p-8">
+                        <h3 class="text-2xl font-bold mb-4">🔢 Solved Numericals</h3>
+                        <p>Step-by-step solutions to numerical problems from all chapters.</p>
+                    </div>
+                    <div class="min-w-[300px] bg-gradient-to-br from-royal-blue to-blue-900 text-white rounded-xl p-8">
+                        <h3 class="text-2xl font-bold mb-4">📄 Past Papers</h3>
+                        <p>Complete collection of past examination papers with detailed solutions.</p>
+                    </div>
+                    <div class="min-w-[300px] bg-gradient-to-br from-purple-500 to-purple-700 text-white rounded-xl p-8">
+                        <h3 class="text-2xl font-bold mb-4">⚡ Revision Sheets</h3>
+                        <p>Quick revision sheets covering important formulas and concepts.</p>
+                    </div>
+                    <div class="min-w-[300px] bg-gradient-to-br from-green-500 to-green-700 text-white rounded-xl p-8">
+                        <h3 class="text-2xl font-bold mb-4">🗺️ Concept Maps</h3>
+                        <p>Visual mind maps connecting related topics for better understanding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Testimonials -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center text-royal-blue mb-16">Student Testimonials</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </div>
+                    <p class="text-gray-600 mb-4 italic">"Edusphere Central made my exam preparation 10 times easier! The notes are clear and perfectly organized."</p>
+                    <p class="font-bold text-royal-blue">— Sarah Ahmed, Grade 10</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </div>
+                    <p class="text-gray-600 mb-4 italic">"The solved past papers helped me understand exactly what to expect in exams. Highly recommended!"</p>
+                    <p class="font-bold text-royal-blue">— Ali Khan, Grade 12</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="flex mb-4">
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                        <i class="fas fa-star text-yellow"></i>
+                    </div>
+                    <p class="text-gray-600 mb-4 italic">"Finally, all my study materials in one place! This platform saved me so much time."</p>
+                    <p class="font-bold text-royal-blue">— Fatima Zain, Grade 11</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-royal-blue to-blue-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Join thousands of students learning smarter every day.</h2>
+            <p class="text-xl mb-8 text-gray-200">Start your journey to academic excellence today.</p>
+            <a href="notes.html" class="bg-yellow text-royal-blue px-10 py-4 rounded-lg font-bold text-xl hover:bg-yellow-400 transition inline-block">Start Learning Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="image.png" alt="Edusphere Central Logo" class="h-10 w-10 md:hidden">
+                        <span class="ml-2 text-xl font-bold">Edusphere Central</span>
+                    </div>
+                    <p class="text-gray-400">Simplify Your Studies, Amplify Your Success.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-teal transition">Home</a></li>
+                        <li><a href="notes.html" class="text-gray-400 hover:text-teal transition">Notes & Subjects</a></li>
+                        <li><a href="resources.html" class="text-gray-400 hover:text-teal transition">Study Resources</a></li>
+                        <li><a href="pricing.html" class="text-gray-400 hover:text-teal transition">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-teal transition">About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-teal transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-teal transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <p class="text-gray-400 mb-2">support@eduspherecentral.com</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-facebook text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-instagram text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-tiktok text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-teal transition"><i class="fab fa-youtube text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Edusphere Central. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // Update navigation based on login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = window.EdusphereAuth?.getCurrentUser();
+
+            const navLogin = document.getElementById('nav-login');
+            const navSignup = document.getElementById('nav-signup');
+            const navLogout = document.getElementById('nav-logout');
+            const navUserName = document.getElementById('nav-user-name');
+
+            const mobileLogin = document.getElementById('mobile-login');
+            const mobileSignup = document.getElementById('mobile-signup');
+            const mobileLogout = document.getElementById('mobile-logout');
+            const mobileUserName = document.getElementById('mobile-user-name');
+
+            const navWelcome = document.getElementById('nav-user-welcome');
+
+            if (currentUser) {
+                // User is logged in - show logout button and welcome message
+                navLogin.classList.add('hidden');
+                navSignup.classList.add('hidden');
+                navLogout.classList.remove('hidden');
+                navWelcome.classList.remove('hidden');
+                navWelcome.textContent = `Welcome, ${currentUser.name}!`;
+
+                mobileLogin.classList.add('hidden');
+                mobileSignup.classList.add('hidden');
+                mobileLogout.classList.remove('hidden');
+                mobileUserName.classList.remove('hidden');
+                mobileUserName.textContent = `Welcome, ${currentUser.name}!`;
+
+                // Logout button click handler
+                navLogout.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        window.EdusphereAuth.logout();
+                        alert('Logged out successfully!');
+                        window.location.href = 'index.html';
+                    }
+                });
+
+                mobileLogout.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        window.EdusphereAuth.logout();
+                        alert('Logged out successfully!');
+                        window.location.href = 'index.html';
+                    }
+                });
+            } else {
+                // User is not logged in - show login/signup buttons
+                navLogin.classList.remove('hidden');
+                navSignup.classList.remove('hidden');
+                navLogout.classList.add('hidden');
+                navWelcome.classList.add('hidden');
+
+                mobileLogin.classList.remove('hidden');
+                mobileSignup.classList.remove('hidden');
+                mobileLogout.classList.add('hidden');
+                mobileUserName.classList.add('hidden');
+            }
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for file in \"resources.html\" \"pricing.html\" \"about.html\" \"contact.html\")",
+      "Bash(do grep -n \"image.png.*h-10 w-10\"\"\" \"d:\\Persnol project\\saeed project\\$file\")",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
