@@ -256,6 +256,59 @@ document.querySelectorAll('.animate-on-scroll').forEach(element => {
     observer.observe(element);
 });
 
+// Logout functionality - Desktop
+const logoutBtn = document.getElementById('nav-logout');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', async function() {
+        if (window.EdusphereAuth && window.EdusphereAuth.logout) {
+            await window.EdusphereAuth.logout();
+        } else {
+            localStorage.removeItem('edusphere_user');
+            window.location.href = 'index.html';
+        }
+    });
+}
+
+// Logout functionality - Mobile
+const mobileLogoutBtn = document.getElementById('mobile-logout');
+if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener('click', async function() {
+        if (window.EdusphereAuth && window.EdusphereAuth.logout) {
+            await window.EdusphereAuth.logout();
+        } else {
+            localStorage.removeItem('edusphere_user');
+            window.location.href = 'index.html';
+        }
+    });
+}
+
+// Display user name in navigation
+document.addEventListener('DOMContentLoaded', function() {
+    // Get user from localStorage directly
+    const storedUser = localStorage.getItem('edusphere_user');
+    if (storedUser) {
+        try {
+            const user = JSON.parse(storedUser);
+
+            // Desktop user name
+            const navUserName = document.getElementById('nav-user-name');
+            if (navUserName) {
+                navUserName.textContent = `Welcome, ${user.name}!`;
+            }
+
+            // Mobile user name
+            const mobileUserName = document.getElementById('mobile-user-name');
+            if (mobileUserName) {
+                mobileUserName.textContent = `Welcome, ${user.name}!`;
+            }
+
+            console.log('👤 Logged in as:', user.name);
+        } catch (e) {
+            console.error('Error parsing user data');
+        }
+    }
+});
+
 // Console welcome message
 console.log('%cWelcome to Edusphere Central!', 'color: #1e3a8a; font-size: 24px; font-weight: bold;');
 console.log('%cSimplify Your Studies, Amplify Your Success', 'color: #14b8a6; font-size: 16px;');

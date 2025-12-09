@@ -63,14 +63,14 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="home.html" class="text-royal-blue font-semibold hover:text-teal transition">Home</a>
                     <a href="notes.html" class="text-gray-700 hover:text-teal transition">Notes & Subjects</a>
-                    <a href="resources.html" class="text-gray-700 hover:text-teal transition">Study Resources</a>
+                    <a href="my-files.html" class="text-gray-700 hover:text-teal transition"><i class="fas fa-folder mr-1"></i>My Files</a>
+                    <!-- <a href="resources.html" class="text-gray-700 hover:text-teal transition">Study Resources</a> -->
                     <a href="pricing.html" class="text-gray-700 hover:text-teal transition">Pricing</a>
                     <a href="about.html" class="text-gray-700 hover:text-teal transition">About</a>
                     <a href="contact.html" class="text-gray-700 hover:text-teal transition">Contact</a>
                 </div>
 
                 <div class="hidden md:flex items-center space-x-4" id="nav-auth-section">
-                    <!-- Auth buttons will be dynamically updated -->
                     <a href="index.html" id="nav-login" class="text-gray-700 hover:text-teal transition">Login</a>
                     <a href="index.html#signup" id="nav-signup" class="bg-royal-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition">Sign Up</a>
                     <button id="nav-logout" class="hidden bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition shadow-md">
@@ -367,37 +367,29 @@
 
     <script src="auth.js"></script>
     <script>
-        // Update navigation based on login status
         document.addEventListener('DOMContentLoaded', function() {
             const currentUser = window.EdusphereAuth?.getCurrentUser();
-
             const navLogin = document.getElementById('nav-login');
             const navSignup = document.getElementById('nav-signup');
             const navLogout = document.getElementById('nav-logout');
-            const navUserName = document.getElementById('nav-user-name');
-
             const mobileLogin = document.getElementById('mobile-login');
             const mobileSignup = document.getElementById('mobile-signup');
             const mobileLogout = document.getElementById('mobile-logout');
             const mobileUserName = document.getElementById('mobile-user-name');
-
             const navWelcome = document.getElementById('nav-user-welcome');
 
             if (currentUser) {
-                // User is logged in - show logout button and welcome message
                 navLogin.classList.add('hidden');
                 navSignup.classList.add('hidden');
                 navLogout.classList.remove('hidden');
                 navWelcome.classList.remove('hidden');
                 navWelcome.textContent = `Welcome, ${currentUser.name}!`;
-
                 mobileLogin.classList.add('hidden');
                 mobileSignup.classList.add('hidden');
                 mobileLogout.classList.remove('hidden');
                 mobileUserName.classList.remove('hidden');
                 mobileUserName.textContent = `Welcome, ${currentUser.name}!`;
 
-                // Logout button click handler
                 navLogout.addEventListener('click', function() {
                     if (confirm('Are you sure you want to logout?')) {
                         window.EdusphereAuth.logout();
@@ -414,12 +406,10 @@
                     }
                 });
             } else {
-                // User is not logged in - show login/signup buttons
                 navLogin.classList.remove('hidden');
                 navSignup.classList.remove('hidden');
                 navLogout.classList.add('hidden');
                 navWelcome.classList.add('hidden');
-
                 mobileLogin.classList.remove('hidden');
                 mobileSignup.classList.remove('hidden');
                 mobileLogout.classList.add('hidden');

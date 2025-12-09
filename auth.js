@@ -1,16 +1,65 @@
 // Authentication JavaScript for Edusphere Central
-// Handles login, signup, and session management using localStorage
+// Handles login, signup, and session management using backend API + localStorage
 
-// Initialize users array from localStorage
-let users = JSON.parse(localStorage.getItem('edusphere_users')) || [];
+const API_BASE_URL = 'http://localhost:3000/api';
+const STORAGE_KEY = 'edusphere_user';
 
-// Get current user from session
-let currentUser = JSON.parse(sessionStorage.getItem('edusphere_current_user')) ||
-                  JSON.parse(localStorage.getItem('edusphere_current_user')) || null;
+// Get current user from localStorage
+let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY)) || null;
+
+// Check if user is logged in
+function isLoggedIn() {
+    return currentUser !== null;
+}
+
+// Save user to localStorage
+function saveUserToStorage(user) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+    currentUser = user;
+}
+
+// Clear user from localStorage
+function clearUserFromStorage() {
+    localStorage.removeItem(STORAGE_KEY);
+    currentUser = null;
+}
+
+// Initialize authentication state - verify with backend
+async function initAuth() {
+    // First check localStorage
+    if (currentUser) {
+        try {
+            // Verify session is still valid with backend
+            const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                // Update localStorage with fresh data
+                saveUserToStorage(data.user);
+                console.log('👤 Session verified:', currentUser.name);
+                return true;
+            } else {
+                // Session expired on backend, clear localStorage
+                console.log('Session expired, clearing local storage');
+                clearUserFromStorage();
+                return false;
+            }
+        } catch (error) {
+            console.log('Could not verify session with backend');
+            // Keep localStorage user if backend is unreachable
+            return currentUser !== null;
+        }
+    }
+    return false;
+}
 
 // Utility Functions
 function showAlert(message, type = 'success') {
     const alertDiv = document.getElementById('alert-message');
+    if (!alertDiv) return;
+
     alertDiv.textContent = message;
     alertDiv.className = `mb-4 p-4 rounded-lg ${
         type === 'success' ? 'bg-green-100 text-green-700 border border-green-400' :
@@ -27,41 +76,6 @@ function showAlert(message, type = 'success') {
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
-}
-
-function saveUsersToStorage() {
-    localStorage.setItem('edusphere_users', JSON.stringify(users));
-}
-
-function setCurrentUser(user, rememberMe = false) {
-    const userData = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        loginTime: new Date().toISOString()
-    };
-
-    // Always save to sessionStorage
-    sessionStorage.setItem('edusphere_current_user', JSON.stringify(userData));
-
-    // Save to localStorage if "Remember Me" is checked
-    if (rememberMe) {
-        localStorage.setItem('edusphere_current_user', JSON.stringify(userData));
-
-        // Set cookie with 30 days expiry
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + 30);
-        document.cookie = `edusphere_user=${user.email}; expires=${expiryDate.toUTCString()}; path=/`;
-    }
-
-    currentUser = userData;
-}
-
-function clearCurrentUser() {
-    sessionStorage.removeItem('edusphere_current_user');
-    localStorage.removeItem('edusphere_current_user');
-    document.cookie = 'edusphere_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    currentUser = null;
 }
 
 // Password visibility toggle
@@ -95,18 +109,20 @@ if (showSignupBtn && showLoginBtn) {
     showSignupBtn.addEventListener('click', () => {
         loginContainer.classList.add('hidden');
         signupContainer.classList.remove('hidden');
-        document.getElementById('alert-message').classList.add('hidden');
+        const alertDiv = document.getElementById('alert-message');
+        if (alertDiv) alertDiv.classList.add('hidden');
     });
 
     showLoginBtn.addEventListener('click', () => {
         signupContainer.classList.add('hidden');
         loginContainer.classList.remove('hidden');
-        document.getElementById('alert-message').classList.add('hidden');
+        const alertDiv = document.getElementById('alert-message');
+        if (alertDiv) alertDiv.classList.add('hidden');
     });
 }
 
 // Check for hash in URL
-if (window.location.hash === '#signup') {
+if (window.location.hash === '#signup' && loginContainer && signupContainer) {
     loginContainer.classList.add('hidden');
     signupContainer.classList.remove('hidden');
 }
@@ -119,7 +135,7 @@ setupPasswordToggle('toggle-confirm-password', 'signup-confirm-password');
 // Login Form Handler
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
+    loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const email = document.getElementById('login-email').value.trim();
@@ -129,161 +145,188 @@ if (loginForm) {
         // Show loading state
         const btnText = document.getElementById('login-btn-text');
         const spinner = document.getElementById('login-spinner');
+        const submitBtn = this.querySelector('button[type="submit"]');
+
         btnText.textContent = 'Logging in...';
         spinner.classList.remove('hidden');
+        submitBtn.disabled = true;
 
-        // Simulate API call delay
-        setTimeout(() => {
+        try {
             // Validate email format
             if (!validateEmail(email)) {
                 showAlert('Please enter a valid email address', 'error');
-                btnText.textContent = 'Login';
-                spinner.classList.add('hidden');
                 return;
             }
 
-            // Find user
-            const user = users.find(u => u.email === email);
+            // Send login request to backend
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email, password, rememberMe })
+            });
 
-            if (!user) {
-                showAlert('No account found with this email. Please sign up first.', 'error');
-                btnText.textContent = 'Login';
-                spinner.classList.add('hidden');
+            const data = await response.json();
+
+            if (!response.ok) {
+                showAlert(data.error || 'Login failed', 'error');
                 return;
             }
 
-            if (user.password !== password) {
-                showAlert('Incorrect password. Please try again.', 'error');
-                btnText.textContent = 'Login';
-                spinner.classList.add('hidden');
-                return;
-            }
+            // Save user to localStorage
+            saveUserToStorage(data.user);
 
-            // Successful login
-            setCurrentUser(user, rememberMe);
             showAlert('Login successful! Redirecting...', 'success');
 
             // Redirect to home page after a short delay
             setTimeout(() => {
                 window.location.href = 'home.html';
             }, 1000);
-        }, 800);
+
+        } catch (error) {
+            console.error('Login error:', error);
+            showAlert('Connection error. Please make sure the server is running.', 'error');
+        } finally {
+            btnText.textContent = 'Login';
+            spinner.classList.add('hidden');
+            submitBtn.disabled = false;
+        }
     });
 }
 
 // Signup Form Handler
 const signupForm = document.getElementById('signup-form');
 if (signupForm) {
-    signupForm.addEventListener('submit', function(e) {
+    signupForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const name = document.getElementById('signup-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
         const password = document.getElementById('signup-password').value;
         const confirmPassword = document.getElementById('signup-confirm-password').value;
+        const grade = document.getElementById('signup-grade')?.value || '';
 
         // Show loading state
         const btnText = document.getElementById('signup-btn-text');
         const spinner = document.getElementById('signup-spinner');
+        const submitBtn = this.querySelector('button[type="submit"]');
+
         btnText.textContent = 'Creating Account...';
         spinner.classList.remove('hidden');
+        submitBtn.disabled = true;
 
-        // Simulate API call delay
-        setTimeout(() => {
+        try {
             // Validate inputs
             if (!name || name.length < 2) {
                 showAlert('Please enter a valid name (at least 2 characters)', 'error');
-                btnText.textContent = 'Create Account';
-                spinner.classList.add('hidden');
                 return;
             }
 
             if (!validateEmail(email)) {
                 showAlert('Please enter a valid email address', 'error');
-                btnText.textContent = 'Create Account';
-                spinner.classList.add('hidden');
-                return;
-            }
-
-            // Check if email already exists
-            const existingUser = users.find(u => u.email === email);
-            if (existingUser) {
-                showAlert('An account with this email already exists. Please login.', 'error');
-                btnText.textContent = 'Create Account';
-                spinner.classList.add('hidden');
                 return;
             }
 
             if (password.length < 6) {
                 showAlert('Password must be at least 6 characters long', 'error');
-                btnText.textContent = 'Create Account';
-                spinner.classList.add('hidden');
                 return;
             }
 
             if (password !== confirmPassword) {
                 showAlert('Passwords do not match. Please try again.', 'error');
-                btnText.textContent = 'Create Account';
-                spinner.classList.add('hidden');
                 return;
             }
 
-            // Create new user
-            const newUser = {
-                id: Date.now().toString(),
-                name: name,
-                email: email,
-                password: password,
-                createdAt: new Date().toISOString(),
-                stats: {
-                    totalNotes: 0,
-                    downloads: 0,
-                    quizzesTaken: 0,
-                    studyStreak: 0
-                }
-            };
+            // Send signup request to backend
+            const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ name, email, password, grade })
+            });
 
-            // Add to users array and save
-            users.push(newUser);
-            saveUsersToStorage();
+            const data = await response.json();
 
-            // Auto login
-            setCurrentUser(newUser, false);
+            if (!response.ok) {
+                showAlert(data.error || 'Signup failed', 'error');
+                return;
+            }
+
+            // Save user to localStorage
+            saveUserToStorage(data.user);
+
             showAlert('Account created successfully! Redirecting...', 'success');
 
             // Redirect to home page after a short delay
             setTimeout(() => {
                 window.location.href = 'home.html';
             }, 1000);
-        }, 800);
+
+        } catch (error) {
+            console.error('Signup error:', error);
+            showAlert('Connection error. Please make sure the server is running.', 'error');
+        } finally {
+            btnText.textContent = 'Create Account';
+            spinner.classList.add('hidden');
+            submitBtn.disabled = false;
+        }
     });
 }
 
+// Logout function
+async function logout() {
+    try {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+
+    // Always clear localStorage and redirect
+    clearUserFromStorage();
+    window.location.href = 'index.html';
+}
+
 // Check if user is already logged in on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // If on login/index page and user is already logged in, redirect to home
+document.addEventListener('DOMContentLoaded', async function() {
     const path = window.location.pathname;
     const isIndexPage = path.includes('index.html') || path.endsWith('/') || path === '';
 
-    console.log('🔍 Path check:', path, '| Is index page:', isIndexPage, '| Current user:', currentUser);
+    console.log('🔍 Path:', path, '| Is index page:', isIndexPage, '| Has stored user:', currentUser !== null);
 
+    // If on login/index page and user is logged in, redirect to home
     if (isIndexPage && currentUser) {
-        console.log('✅ Redirecting to home.html');
+        console.log('✅ User is logged in, redirecting to home.html');
         window.location.href = 'home.html';
+        return;
+    }
+
+    // If NOT on index page and user is NOT logged in, redirect to login
+    if (!isIndexPage && !currentUser) {
+        console.log('❌ User not logged in, redirecting to index.html');
+        window.location.href = 'index.html';
+        return;
     }
 });
 
 // Export functions for use in other scripts
 window.EdusphereAuth = {
     getCurrentUser: () => currentUser,
-    logout: clearCurrentUser,
-    isLoggedIn: () => currentUser !== null,
-    getUsers: () => users
+    logout: logout,
+    isLoggedIn: isLoggedIn,
+    refreshUser: initAuth,
+    saveUser: saveUserToStorage,
+    clearUser: clearUserFromStorage
 };
 
 // Console message
 console.log('🔐 Authentication system initialized');
-console.log('📊 Total registered users:', users.length);
 if (currentUser) {
-    console.log('👤 Current user:', currentUser.name);
+    console.log('👤 Logged in as:', currentUser.name);
 }
